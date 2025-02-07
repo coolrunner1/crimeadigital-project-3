@@ -12,8 +12,8 @@ export const SearchBar = (
         <>
             <div className="w-full">
                 <div
-                    className="relative flex items-center w-full h-12 rounded-lg shadow-lg overflow-hidden bg-search">
-                    <div className="grid place-items-center h-full w-12 text-gray-300 bg-search">
+                    className="relative flex items-center w-full h-12 rounded-lg shadow-lg overflow-hidden">
+                    <div className="grid place-items-center h-full w-12 text-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                              stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

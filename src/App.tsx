@@ -9,12 +9,14 @@ import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
 import {Loading} from "./pages/Loading.tsx";
 import {Options} from "./pages/Options.tsx";
 import {Search} from "./pages/Search.tsx";
+import {enableMapSet} from "immer";
 
 function App() {
     const dispatch = useDispatch();
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
+        enableMapSet();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 dispatch(setLatitude(position.coords.latitude));

@@ -1,11 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
 import locationSlice from "../slices/locationSlice.ts";
 import flagsSlice from "../slices/flagsSlice.ts";
+import savedSlice from "../slices/savedSlice.ts";
 
 export const store = configureStore({
     reducer: {
         location: locationSlice,
         flags: flagsSlice,
+        saved: savedSlice,
     }
 });
 
