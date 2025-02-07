@@ -1,0 +1,9 @@
+.navbar {
+    @apply absolute;
+}
+
+@media(max-height: 800px) {
+    .navbar {
+        position: relative;
+    }
+}
