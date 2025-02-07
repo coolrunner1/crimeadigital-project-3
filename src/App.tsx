@@ -1,12 +1,13 @@
 import './App.css'
 import {BrowserRouter, Navigate, Route, Routes} from "react-router";
-import {Main} from "./pages/Main.tsx";
+import {Weather} from "./pages/Weather.tsx";
 import {PageNotFound} from "./pages/PageNotFound.tsx";
 import {NavBar} from "./components/NavBar.tsx";
 import {useEffect, useState} from "react";
 import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
 import {Loading} from "./pages/Loading.tsx";
+import {Options} from "./pages/Options.tsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -36,7 +37,8 @@ function App() {
                         : <>
                             <NavBar/>
                             <Routes>
-                                <Route path="/" element={<Main/>} />
+                                <Route path="/" element={<Weather/>} />
+                                <Route path="/options" element={<Options/>} />
                                 <Route path="/404" element={<PageNotFound/>} />
                                 <Route path="*" element={<Navigate to="/404" replace />} />
                             </Routes>
