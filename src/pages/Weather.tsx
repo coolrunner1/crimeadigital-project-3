@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {Loading} from "./Loading.tsx";
 import {Forecast} from "../types/Forecast.ts";
+import {WeatherBox} from "../components/WeatherBox.tsx";
 
 export const Weather = () => {
     const [forecast, setForecast] = useState<Forecast>({
@@ -36,7 +37,7 @@ export const Weather = () => {
             return;
         }
 
-        fetch(url+`&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
+        fetch(`${url}&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
                 console.log(json);
@@ -53,7 +54,7 @@ export const Weather = () => {
         if (location.latitude === 0 && location.longitude === 0) {
             networkRequest("https://api.openweathermap.org/data/2.5/weather?q=Sevastopol");
         } else {
-            networkRequest("https://api.openweathermap.org/data/2.5/weather?lat="+location.latitude+"&lon="+location.longitude)
+            networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}`)
         }
         console.log(forecast);
     }, []);
@@ -63,7 +64,7 @@ export const Weather = () => {
             {!loaded && <Loading />}
             {loaded && <>
                 <div className="h-svh flex">
-                    <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:rounded-2xl m-auto">
+                    <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
                         <div className="text-4xl font-bold">{forecast.name}, {forecast.sys.country}</div>
                         <div className="text-2xl font-light">{forecast.main.temp}°C</div>
                         {flags.showFeelsLike &&
@@ -75,13 +76,13 @@ export const Weather = () => {
                             <span className="text-xl">{forecast.weather[0].description}</span></div>
                         <div className="flex flex-col gap-3 mt-5">
                             {flags.showWind &&
-                                <div className="text-2xl font-light shadow rounded p-4">Wind {forecast.wind.speed} m/s</div>
+                                <WeatherBox label={`Wind ${forecast.wind.speed} m/s`}/>
                             }
                             {flags.showPressure &&
-                                <div className="text-2xl font-light shadow rounded p-4">Pressure {forecast.main.pressure} hPa</div>
+                                <WeatherBox label={`Pressure ${forecast.main.pressure} hPa`}/>
                             }
                             {flags.showHumidity &&
-                                <div className="text-2xl font-light shadow rounded p-4">Humidity {forecast.main.humidity}%</div>
+                                <WeatherBox label={`Humidity ${forecast.main.humidity}%`}/>
                             }
                         </div>
 

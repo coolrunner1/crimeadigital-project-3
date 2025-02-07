@@ -8,6 +8,7 @@ import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
 import {Loading} from "./pages/Loading.tsx";
 import {Options} from "./pages/Options.tsx";
+import {Search} from "./pages/Search.tsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<Weather/>} />
                                 <Route path="/options" element={<Options/>} />
+                                <Route path="/search" element={<Search/>} />
                                 <Route path="/404" element={<PageNotFound/>} />
                                 <Route path="*" element={<Navigate to="/404" replace />} />
                             </Routes>
