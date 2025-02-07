@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {Loading} from "./Loading.tsx";
 import {Forecast} from "../types/Forecast.ts";
 import {WeatherBox} from "../components/WeatherBox.tsx";
+import {City} from "../types/City.ts";
+import {removeFromCities} from "../slices/savedSlice.ts";
 
 export const Weather = () => {
     const [forecast, setForecast] = useState<Forecast>({
@@ -27,16 +29,16 @@ export const Weather = () => {
         }]
     });
 
+    const dispatch = useDispatch();
+
     const [loaded, setLoaded] = useState(false);
+    const [index, setIndex] = useState(0);
 
     const location = useSelector((state: RootState) => state.location);
     const flags = useSelector((state: RootState) => state.flags);
+    const cities: City[] = useSelector((state: RootState) => Array.from(state.saved.cities.values()));
 
-    const networkRequest = (url: string) => {
-        if (loaded) {
-            return;
-        }
-
+    const networkRequest = async (url: string) => {
         fetch(`${url}&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
@@ -50,14 +52,40 @@ export const Weather = () => {
             });
     };
 
-    useEffect(() => {
+    const getDefaultForecast = async () => {
         if (location.latitude === 0 && location.longitude === 0) {
-            networkRequest("https://api.openweathermap.org/data/2.5/weather?q=Sevastopol");
+            await networkRequest("https://api.openweathermap.org/data/2.5/weather?q=Sevastopol");
         } else {
-            networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}`)
+            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}`)
         }
+    }
+
+    const changeCity = async () => {
+        setLoaded(false);
+        if (index > 0 && index <= cities.length) {
+            const i = index - 1;
+            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${cities[i].lat}&lon=${cities[i].lon}`)
+        } else if (index === 0) {
+            await getDefaultForecast();
+        } else {
+            alert("Error! Please refresh the page");
+        }
+    }
+
+    const removeCity = () => {
+        setLoaded(false);
+        setIndex(index-1);
+        dispatch(removeFromCities(cities[index-1]))
+    }
+
+    useEffect(() => {
+        getDefaultForecast();
         console.log(forecast);
     }, []);
+
+    useEffect(() => {
+        changeCity();
+    }, [index]);
 
     return (
         <>
@@ -87,9 +115,9 @@ export const Weather = () => {
                         </div>
 
                         <div className={"grid grid-cols-3 grid-rows-1 gap-3 md:mt-5"}>
-                            <button>Back</button>
-                            <button>Remove</button>
-                            <button>Forward</button>
+                            <button disabled={index === 0} onClick={() => setIndex(index-1)}>Back</button>
+                            <button disabled={index === 0} onClick={removeCity}>Remove</button>
+                            <button disabled={index === cities.length} onClick={() => setIndex(index+1)}>Forward</button>
                         </div>
                     </div>
                 </div>

@@ -50,6 +50,12 @@ button {
 button:hover {
     border-color: #646cff;
 }
+button:disabled {
+    background-color: #ccc;
+}
+button:hover:disabled {
+    background-color: #ccc;
+}
 
 @media (prefers-color-scheme: light) {
     :root {
@@ -62,5 +68,11 @@ button:hover {
     button {
         background-color: #4681f4;
         color: white;
+    }
+    button:hover {
+        @apply ring-2 ring-blue-300
+    }
+    button:hover:disabled {
+        @apply ring-0
     }
 }

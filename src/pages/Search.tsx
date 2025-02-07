@@ -12,7 +12,6 @@ export const Search = () => {
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        console.log(cities);
     }
 
     const getCities = async () => {
