@@ -25,12 +25,16 @@ export const Main = () => {
             description: "",
         }]
     });
+
     const [loaded, setLoaded] = useState(false);
 
-    const latitude = useSelector((state: RootState) => state.location.latitude);
-    const longitude = useSelector((state: RootState) => state.location.longitude);
+    const location = useSelector((state: RootState) => state.location);
 
     const networkRequest = (url: string) => {
+        if (loaded) {
+            return;
+        }
+
         fetch(url+`&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
@@ -45,10 +49,10 @@ export const Main = () => {
     };
 
     useEffect(() => {
-        if (latitude === 0 && longitude === 0) {
+        if (location.latitude === 0 && location.longitude === 0) {
             networkRequest("https://api.openweathermap.org/data/2.5/weather?q=Sevastopol");
         } else {
-            networkRequest("https://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude)
+            networkRequest("https://api.openweathermap.org/data/2.5/weather?lat="+location.latitude+"&lon="+location.longitude)
         }
         console.log(forecast);
     }, []);
