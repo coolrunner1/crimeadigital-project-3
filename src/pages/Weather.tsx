@@ -42,12 +42,11 @@ export const Weather = () => {
         fetch(`${url}&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 setForecast(json);
                 setLoaded(true);
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
                 alert("Network Error");
             });
     };
@@ -80,7 +79,6 @@ export const Weather = () => {
 
     useEffect(() => {
         getDefaultForecast();
-        console.log(forecast);
     }, []);
 
     useEffect(() => {

@@ -18,11 +18,10 @@ export const Search = () => {
         fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=10&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
-                console.log(json);
                 setResults(json);
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
                 alert("Network Error");
             });
     }
