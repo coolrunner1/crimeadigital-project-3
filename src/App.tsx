@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {BrowserRouter, Navigate, Route, Routes} from "react-router";
+import {Main} from "./pages/Main.tsx";
+import {PageNotFound} from "./pages/PageNotFound.tsx";
+import {NavBar} from "./components/NavBar.tsx";
+import {useEffect, useState} from "react";
+import {useDispatch} from 'react-redux';
+import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
+import {Loading} from "./pages/Loading.tsx";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const dispatch = useDispatch();
+    const [loaded, setLoaded] = useState(false);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                dispatch(setLatitude(position.coords.latitude));
+                dispatch(setLongitude(position.coords.longitude));
+                setLoaded(true);
+            },(error) => {
+                console.error(error);
+                setLoaded(true);
+            });
+        } else {
+            console.log("Geolocation not supported");
+            setLoaded(true);
+        }
+    }, []);
+
+    return (
+        <>
+            <BrowserRouter>
+                    {!loaded
+                        ? <Loading />
+                        : <>
+                            <NavBar/>
+                            <Routes>
+                                <Route path="/" element={<Main/>} />
+                                <Route path="/404" element={<PageNotFound/>} />
+                                <Route path="*" element={<Navigate to="/404" replace />} />
+                            </Routes>
+                        </>
+                    }
+            </BrowserRouter>
+        </>
+      )
 }
 
 export default App
