@@ -34,7 +34,7 @@ export const Search = () => {
 
     return (
         <>
-            <div className="h-svh flex">
+            <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
                 <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
                     <span className="font-bold text-4xl">Search</span>
                     <div className="flex flex-row w-full gap-5">

@@ -4,6 +4,12 @@
 
 @media(max-height: 800px) {
     .navbar {
-        position: relative;
+        @apply relative;
+    }
+}
+
+@media(max-width: 700px) {
+    .navbar {
+        @apply relative;
     }
 }
