@@ -89,7 +89,7 @@ export const Weather = () => {
         <>
             {!loaded && <Loading />}
             {loaded && <>
-                <div className="sm:h-svh flex">
+                <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                     <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
                         <div className="text-4xl font-bold">{forecast.name}, {forecast.sys.country}</div>
                         <div className="text-2xl font-light">{forecast.main.temp}°C</div>
