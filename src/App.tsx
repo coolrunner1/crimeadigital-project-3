@@ -12,6 +12,7 @@ import {Search} from "./pages/Search.tsx";
 import {enableMapSet} from "immer";
 import {loadFromLocalStorage} from "./slices/savedSlice.ts";
 import {setFlagsFromLocalStorage} from "./slices/flagsSlice.ts";
+import {Saved} from "./pages/Saved.tsx";
 
 function App() {
     const dispatch = useDispatch();
@@ -47,6 +48,7 @@ function App() {
                                 <Route path="/" element={<Weather/>} />
                                 <Route path="/options" element={<Options/>} />
                                 <Route path="/search" element={<Search/>} />
+                                <Route path="/saved" element={<Saved/>} />
                                 <Route path="/404" element={<PageNotFound/>} />
                                 <Route path="*" element={<Navigate to="/404" replace />} />
                             </Routes>

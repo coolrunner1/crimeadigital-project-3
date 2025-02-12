@@ -1,14 +1,12 @@
 import {SearchBar} from "../components/SearchBar.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {City} from "../types/City.ts";
-import {useSelector} from "react-redux";
-import {RootState} from "../state/store.ts";
 import {SearchItem} from "../components/SearchItem.tsx";
 
 export const Search = () => {
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState<string>('');
     const [results, setResults] = useState<City[]>([]);
-    const cities = useSelector((state: RootState) => state.saved.cities);
+    const [found, setFound] = useState<boolean>(false);
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
@@ -18,6 +16,12 @@ export const Search = () => {
         fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=10&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
+                if (json.length > 0) {
+                    setFound(true);
+                } else {
+                    setFound(false);
+                }
+
                 setResults(json);
             })
             .catch(err => {
@@ -47,10 +51,13 @@ export const Search = () => {
                         <button onClick={getCities}>Search</button>
                     </div>
 
+                    {!found && search.length !== 0
+                        && <div className={"text-2xl"}>No cities found</div>}
+
                     <div className="flex flex-col gap-5">
                         {results.length > 0 &&
                         results.map((item, i) =>
-                            (<SearchItem item={item} key={i} cities={cities}/>))}
+                            (<SearchItem item={item} key={i}/>))}
                     </div>
                 </div>
             </div>

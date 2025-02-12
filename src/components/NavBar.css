@@ -13,3 +13,24 @@
         @apply relative;
     }
 }
+
+@media(max-width: 400px) {
+    .navbar button {
+        padding-right: 8px;
+        padding-left: 8px;
+    }
+}
+
+@media(max-width: 350px) {
+    .navbar button {
+        padding: 2px;
+        background: none;
+        border: none;
+    }
+    .navbar button:hover {
+        color: #646cff !important;
+        text-decoration: underline;
+        background: none;
+        border: none;
+    }
+}
