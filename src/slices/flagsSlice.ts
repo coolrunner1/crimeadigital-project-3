@@ -33,8 +33,8 @@ const flagsSlice = createSlice({
         setFlagsFromLocalStorage: (state) => {
             state.showFeelsLike = localStorage.getItem('feelsLike') === 'true';
             state.showWind = localStorage.getItem('showWind') === 'true';
-            state.showPressure = localStorage.getItem('showWind') === 'true';
-            state.showHumidity = localStorage.getItem('showWind') === 'true';
+            state.showPressure = localStorage.getItem('showPressure') === 'true';
+            state.showHumidity = localStorage.getItem('showHumidity') === 'true';
             state.showDaytime = localStorage.getItem('showDaytime') === 'true';
         }
     }
