@@ -55,7 +55,7 @@ export const Saved = () => {
                         && <div className={"text-2xl"}>No saved cities yet</div>}
                     {allCities.length !== 0 && cities.length === 0
                         && <div className={"text-2xl"}>No cities found</div>}
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll">
                         {cities.map((item, index) => (<SearchItem item={item[1]} key={index}/>))}
                     </div>
                 </div>

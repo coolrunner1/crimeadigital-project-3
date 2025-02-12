@@ -6,10 +6,11 @@ import {SearchItem} from "../components/SearchItem.tsx";
 export const Search = () => {
     const [search, setSearch] = useState<string>('');
     const [results, setResults] = useState<City[]>([]);
-    const [found, setFound] = useState<boolean>(false);
+    const [notFound, setNotFound] = useState<boolean>(false);
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
+        setNotFound(false);
     }
 
     const getCities = async () => {
@@ -17,9 +18,9 @@ export const Search = () => {
             .then(res => res.json())
             .then(json => {
                 if (json.length > 0) {
-                    setFound(true);
+                    setNotFound(false);
                 } else {
-                    setFound(false);
+                    setNotFound(true);
                 }
 
                 setResults(json);
@@ -51,13 +52,13 @@ export const Search = () => {
                         <button onClick={getCities}>Search</button>
                     </div>
 
-                    {!found && search.length !== 0
+                    {notFound
                         && <div className={"text-2xl"}>No cities found</div>}
 
                     <div className="flex flex-col gap-5">
                         {results.length > 0 &&
-                        results.map((item, i) =>
-                            (<SearchItem item={item} key={i}/>))}
+                            results.map((item, i) =>
+                                (<SearchItem item={item} key={i}/>))}
                     </div>
                 </div>
             </div>
