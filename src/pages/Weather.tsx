@@ -124,7 +124,7 @@ export const Weather = () => {
 
                         </div>
 
-                        <div className={"grid grid-cols-3 grid-rows-1 gap-3 md:mt-5"}>
+                        <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
                             <button disabled={index === 0} onClick={() => setIndex(index-1)}>Back</button>
                             <button disabled={index === 0} onClick={removeCity}>Remove</button>
                             <button disabled={index === cities.length} onClick={() => setIndex(index+1)}>Forward</button>
