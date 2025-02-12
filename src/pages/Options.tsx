@@ -1,7 +1,7 @@
 import {Checkbox} from "../components/Checkbox.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
-import {setShowFeelsLike, setShowHumidity, setShowPressure, setShowWind} from "../slices/flagsSlice.ts";
+import {setShowDaytime, setShowFeelsLike, setShowHumidity, setShowPressure, setShowWind} from "../slices/flagsSlice.ts";
 
 export const Options = () => {
     const flags = useSelector((state: RootState) => state.flags);
@@ -24,6 +24,9 @@ export const Options = () => {
                         }}/>
                         <Checkbox label={"Show humidity"} checked={flags.showHumidity} onClick={() => {
                             dispatch(setShowHumidity(!flags.showHumidity));
+                        }}/>
+                        <Checkbox label={"Show daytime"} checked={flags.showDaytime} onClick={() => {
+                            dispatch(setShowDaytime(!flags.showDaytime));
                         }}/>
                     </div>
                 </div>

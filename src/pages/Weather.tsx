@@ -11,7 +11,9 @@ export const Weather = () => {
     const [forecast, setForecast] = useState<Forecast>({
         name: "",
         sys: {
-            country: ""
+            country: "",
+            sunset: 0,
+            sunrise: 0,
         },
         main: {
             temp: 0,
@@ -46,7 +48,7 @@ export const Weather = () => {
                 setLoaded(true);
             })
             .catch(err => {
-                console.error(err);
+                console.log(err);
                 alert("Network Error");
             });
     };
@@ -100,7 +102,10 @@ export const Weather = () => {
                             <img src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`} alt="weather-icon"/>
                             <span className="text-2xl">{forecast.weather[0].main}</span>
                             <span className="text-xl">{forecast.weather[0].description}</span></div>
-                        <div className="flex flex-col gap-3 mt-5">
+                        <div className={
+                            (flags.showWind && flags.showHumidity && flags.showPressure && flags.showDaytime)
+                                ? "grid grid-rows-4 grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-2 sm:gap-4 mt-5"
+                                : "flex flex-col gap-3 mt-5"}>
                             {flags.showWind &&
                                 <WeatherBox label={`Wind ${forecast.wind.speed} m/s`}/>
                             }
@@ -110,6 +115,13 @@ export const Weather = () => {
                             {flags.showHumidity &&
                                 <WeatherBox label={`Humidity ${forecast.main.humidity}%`}/>
                             }
+                            {flags.showDaytime &&
+                                <WeatherBox label={`Daytime 
+                                    ${new Date(forecast.sys.sunrise*1000).toLocaleTimeString().slice(0,5)} 
+                                    - ${new Date(forecast.sys.sunset*1000).toLocaleTimeString().slice(0,5)}
+                                `}/>
+                            }
+
                         </div>
 
                         <div className={"grid grid-cols-3 grid-rows-1 gap-3 md:mt-5"}>

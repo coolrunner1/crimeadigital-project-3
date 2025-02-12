@@ -4,6 +4,8 @@ export type Forecast = {
     name: string;
     sys: {
         country: string;
+        sunset: number;
+        sunrise: number;
     };
     main: {
         temp: number;
