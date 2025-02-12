@@ -59,7 +59,7 @@ export const Weather = () => {
         } else {
             await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}`)
         }
-    }
+    };
 
     const changeCity = async () => {
         setLoaded(false);
@@ -71,12 +71,18 @@ export const Weather = () => {
         } else {
             alert("Error! Please refresh the page");
         }
-    }
+    };
 
     const removeCity = () => {
         setLoaded(false);
         setIndex(index-1);
         dispatch(removeFromCities(cities[index-1]))
+    };
+
+    const getDaytime = () => {
+        const sunrise = new Date(forecast.sys.sunrise*1000).toLocaleTimeString("ru-RU").split(":");
+        const sunset = new Date(forecast.sys.sunset*1000).toLocaleTimeString("ru-RU").split(":");
+        return `${sunrise[0]}:${sunrise[1]} - ${sunset[0]}:${sunset[1]}`;
     }
 
     useEffect(() => {
@@ -116,10 +122,7 @@ export const Weather = () => {
                                 <WeatherBox label={`Humidity ${forecast.main.humidity}%`}/>
                             }
                             {flags.showDaytime &&
-                                <WeatherBox label={`Daytime 
-                                    ${new Date(forecast.sys.sunrise*1000).toLocaleTimeString().slice(0,5)} 
-                                    - ${new Date(forecast.sys.sunset*1000).toLocaleTimeString().slice(0,5)}
-                                `}/>
+                                <WeatherBox label={`Daytime ${getDaytime()}`}/>
                             }
 
                         </div>
