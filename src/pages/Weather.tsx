@@ -10,6 +10,7 @@ import {removeFromCities} from "../slices/savedSlice.ts";
 export const Weather = () => {
     const [forecast, setForecast] = useState<Forecast>({
         name: "",
+        timezone: 0,
         sys: {
             country: "",
             sunset: 0,
@@ -46,6 +47,7 @@ export const Weather = () => {
             .then(json => {
                 setForecast(json);
                 setLoaded(true);
+                console.log(json);
             })
             .catch(err => {
                 console.log(err);
@@ -80,14 +82,11 @@ export const Weather = () => {
     };
 
     const getDaytime = () => {
-        const sunrise = new Date(forecast.sys.sunrise*1000).toLocaleTimeString("ru-RU").split(":");
-        const sunset = new Date(forecast.sys.sunset*1000).toLocaleTimeString("ru-RU").split(":");
-        return `${sunrise[0]}:${sunrise[1]} - ${sunset[0]}:${sunset[1]}`;
+        const sunrise = new Date((forecast.sys.sunrise + forecast.timezone) * 1000);
+        const sunset = new Date((forecast.sys.sunset+ forecast.timezone) * 1000);
+        return `${sunrise.getUTCHours()}:${("0"+sunrise.getUTCMinutes()).slice(-2)} - 
+        ${sunset.getUTCHours()}:${("0"+sunset.getUTCMinutes()).slice(-2)}`;
     }
-
-    useEffect(() => {
-        getDefaultForecast();
-    }, []);
 
     useEffect(() => {
         changeCity();
