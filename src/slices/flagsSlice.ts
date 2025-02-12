@@ -26,9 +26,6 @@ const flagsSlice = createSlice({
             localStorage.setItem('showHumidity', action.payload.toString());
         },
         setFlagsFromLocalStorage: (state) => {
-            if (localStorage.getItem('feelsLike') === null) {
-                return;
-            }
             state.showFeelsLike = localStorage.getItem('feelsLike') === 'true';
             state.showWind = localStorage.getItem('showWind') === 'true';
             state.showPressure = localStorage.getItem('showWind') === 'true';
