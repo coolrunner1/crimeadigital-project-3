@@ -20,7 +20,6 @@ const savedSlice = createSlice({
                 const items: City[] = Object.keys(localStorage)
                     .filter(key => parseInt(key))
                     .map(key => JSON.parse(localStorage[key]));
-                console.log(items);
                 items.forEach((item) => state.cities.set(`${item.lat}${item.lon}`, item));
             } catch (error) {
                 console.error(error)

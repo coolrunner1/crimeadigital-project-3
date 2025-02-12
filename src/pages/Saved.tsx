@@ -34,7 +34,6 @@ export const Saved = () => {
 
     useEffect(() => {
         getCities();
-        console.log(cities);
     }, [allCities.length])
 
     return (
