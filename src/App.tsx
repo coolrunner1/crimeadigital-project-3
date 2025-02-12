@@ -10,6 +10,8 @@ import {Loading} from "./pages/Loading.tsx";
 import {Options} from "./pages/Options.tsx";
 import {Search} from "./pages/Search.tsx";
 import {enableMapSet} from "immer";
+import {loadFromLocalStorage} from "./slices/savedSlice.ts";
+import {setFlagsFromLocalStorage} from "./slices/flagsSlice.ts";
 
 function App() {
     const dispatch = useDispatch();
@@ -17,6 +19,8 @@ function App() {
 
     useEffect(() => {
         enableMapSet();
+        dispatch(loadFromLocalStorage());
+        dispatch(setFlagsFromLocalStorage());
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 dispatch(setLatitude(position.coords.latitude));
