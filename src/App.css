@@ -47,14 +47,21 @@ button {
     cursor: pointer;
     transition: border-color 0.25s;
 }
+
 button:hover {
     border-color: #646cff;
 }
+
 button:disabled {
     background-color: #ccc;
 }
-button:hover:disabled {
+
+button:disabled:hover {
     background-color: #ccc;
+}
+
+button:hover:disabled {
+    border-color: #ccc;
 }
 
 @media (prefers-color-scheme: light) {
