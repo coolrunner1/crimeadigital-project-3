@@ -12,15 +12,15 @@
 
 ## Running locally
 
-Requires nodejs 18 lts.
+- Requires nodejs 18 lts.
 
-Requires openweathermap api key.
+- Requires openweathermap api key.
 
-To install dependencies:
+- To install dependencies:
 ```$ npm install```
 
-To run as a developer:
+- To run as a developer:
 ```$ npm run dev```
   
-To build:
+- To build:
 ```$ npm run build```
