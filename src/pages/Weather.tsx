@@ -47,7 +47,6 @@ export const Weather = () => {
             .then(json => {
                 setForecast(json);
                 setLoaded(true);
-                console.log(json);
             })
             .catch(err => {
                 console.log(err);
