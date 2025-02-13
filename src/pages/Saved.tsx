@@ -37,28 +37,26 @@ export const Saved = () => {
     }, [allCities.length])
 
     return (
-        <>
-            <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
-                <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
-                    <span className="font-bold text-4xl">Saved cities</span>
-                    <div className="flex flex-row w-full gap-5">
-                        <SearchBar
-                            placeholder={"Find saved cities"}
-                            keyPressHandler={keyPressHandler}
-                            search={search}
-                            setSearch={onSearchChange}
-                        />
-                        <button onClick={getCities}>Search</button>
-                    </div>
-                    {allCities.length === 0
-                        && <div className={"text-2xl"}>No saved cities yet</div>}
-                    {allCities.length !== 0 && cities.length === 0
-                        && <div className={"text-2xl"}>No cities found</div>}
-                    <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll">
-                        {cities.map((item, index) => (<SearchItem item={item[1]} key={index}/>))}
-                    </div>
+        <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
+            <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
+                <span className="font-bold text-4xl">Saved cities</span>
+                <div className="flex flex-row w-full gap-5">
+                    <SearchBar
+                        placeholder={"Find saved cities"}
+                        keyPressHandler={keyPressHandler}
+                        search={search}
+                        setSearch={onSearchChange}
+                    />
+                    <button onClick={getCities}>Search</button>
+                </div>
+                {allCities.length === 0
+                    && <div className={"text-2xl"}>No saved cities yet</div>}
+                {allCities.length !== 0 && cities.length === 0
+                    && <div className={"text-2xl"}>No cities found</div>}
+                <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll">
+                    {cities.map((item, index) => (<SearchItem item={item[1]} key={index}/>))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };

@@ -38,24 +38,22 @@ function App() {
     }, []);
 
     return (
-        <>
-            <BrowserRouter>
-                    {!loaded
-                        ? <Loading />
-                        : <>
-                            <NavBar/>
-                            <Routes>
-                                <Route path="/" element={<Weather/>} />
-                                <Route path="/options" element={<Options/>} />
-                                <Route path="/search" element={<Search/>} />
-                                <Route path="/saved" element={<Saved/>} />
-                                <Route path="/404" element={<PageNotFound/>} />
-                                <Route path="*" element={<Navigate to="/404" replace />} />
-                            </Routes>
-                        </>
-                    }
-            </BrowserRouter>
-        </>
+        <BrowserRouter>
+            {!loaded
+                ? <Loading />
+                : <>
+                    <NavBar/>
+                    <Routes>
+                        <Route path="/" element={<Weather/>} />
+                        <Route path="/options" element={<Options/>} />
+                        <Route path="/search" element={<Search/>} />
+                        <Route path="/saved" element={<Saved/>} />
+                        <Route path="/404" element={<PageNotFound/>} />
+                        <Route path="*" element={<Navigate to="/404" replace />} />
+                    </Routes>
+                </>
+            }
+        </BrowserRouter>
       )
 }
 

@@ -38,30 +38,28 @@ export const Search = () => {
     }
 
     return (
-        <>
-            <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
-                <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
-                    <span className="font-bold text-4xl">Search</span>
-                    <div className="flex flex-row w-full gap-5">
-                        <SearchBar
-                            placeholder={"Find cities"}
-                            keyPressHandler={keyPressHandler}
-                            search={search}
-                            setSearch={onSearchChange}
-                        />
-                        <button onClick={getCities}>Search</button>
-                    </div>
+        <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
+            <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto">
+                <span className="font-bold text-4xl">Search</span>
+                <div className="flex flex-row w-full gap-5">
+                    <SearchBar
+                        placeholder={"Find cities"}
+                        keyPressHandler={keyPressHandler}
+                        search={search}
+                        setSearch={onSearchChange}
+                    />
+                    <button onClick={getCities}>Search</button>
+                </div>
 
-                    {notFound
-                        && <div className={"text-2xl"}>No cities found</div>}
+                {notFound
+                    && <div className={"text-2xl"}>No cities found</div>}
 
-                    <div className="flex flex-col gap-5">
-                        {results.length > 0 &&
-                            results.map((item, i) =>
-                                (<SearchItem item={item} key={i}/>))}
-                    </div>
+                <div className="flex flex-col gap-5">
+                    {results.length > 0 &&
+                        results.map((item, i) =>
+                            (<SearchItem item={item} key={i}/>))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
