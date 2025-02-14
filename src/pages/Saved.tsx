@@ -3,6 +3,7 @@ import {SearchItem} from "../components/SearchItem.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
+import {uuid} from "uuidv4";
 
 export const Saved = () => {
     const allCities = useSelector((state: RootState)=> Array.from(state.saved.cities));
@@ -54,7 +55,7 @@ export const Saved = () => {
                 {allCities.length !== 0 && cities.length === 0
                     && <div className={"text-2xl"}>No cities found</div>}
                 <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll">
-                    {cities.map((item, index) => (<SearchItem item={item[1]} key={index}/>))}
+                    {cities.map((item) => (<SearchItem item={item[1]} key={uuid()}/>))}
                 </div>
             </div>
         </div>

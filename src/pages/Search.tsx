@@ -2,6 +2,7 @@ import {SearchBar} from "../components/SearchBar.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {City} from "../types/City.ts";
 import {SearchItem} from "../components/SearchItem.tsx";
+import {uuid} from "uuidv4";
 
 export const Search = () => {
     const [search, setSearch] = useState<string>('');
@@ -56,8 +57,8 @@ export const Search = () => {
 
                 <div className="flex flex-col gap-5">
                     {results.length > 0 &&
-                        results.map((item, i) =>
-                            (<SearchItem item={item} key={i}/>))}
+                        results.map((item) =>
+                            (<SearchItem item={item} key={uuid()}/>))}
                 </div>
             </div>
         </div>
