@@ -6,7 +6,7 @@ import {NavBar} from "./components/NavBar.tsx";
 import {useEffect, useState} from "react";
 import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
-import {Loading} from "./pages/Loading.tsx";
+import {Loading} from "./components/Loading.tsx";
 import {Options} from "./pages/Options.tsx";
 import {Search} from "./pages/Search.tsx";
 import {enableMapSet} from "immer";

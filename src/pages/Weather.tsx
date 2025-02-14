@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
-import {Loading} from "./Loading.tsx";
+import {Loading} from "../components/Loading.tsx";
 import {Forecast} from "../types/Forecast.ts";
 import {WeatherBox} from "../components/WeatherBox.tsx";
 import {City} from "../types/City.ts";

@@ -2,9 +2,9 @@ import {ChangeEventHandler, KeyboardEventHandler} from "react";
 
 export const SearchBar = (
     props: {placeholder: string;
-    keyPressHandler: KeyboardEventHandler<HTMLInputElement>;
-    search: string;
-    setSearch: ChangeEventHandler<HTMLInputElement>;
+        keyPressHandler: KeyboardEventHandler<HTMLInputElement>;
+        search: string;
+        setSearch: ChangeEventHandler<HTMLInputElement>;
     }) => {
 
 
