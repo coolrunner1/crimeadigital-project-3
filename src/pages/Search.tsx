@@ -1,21 +1,27 @@
 import {SearchBar} from "../components/SearchBar.tsx";
-import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
 import {City} from "../types/City.ts";
 import {SearchItem} from "../components/SearchItem.tsx";
 import { v4 as uuidv4 } from 'uuid';
+import {useNavigate} from "react-router";
 
 export const Search = () => {
     const [search, setSearch] = useState<string>('');
     const [results, setResults] = useState<City[]>([]);
     const [notFound, setNotFound] = useState<boolean>(false);
 
+    const navigate = useNavigate();
+
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
         setNotFound(false);
     }
 
-    const getCities = async () => {
-        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${search}&limit=10&appid=${import.meta.env.VITE_API_KEY}`)
+    const getCities = async (searchString ?: string) => {
+        if (!searchString) {
+            searchString = search;
+        }
+        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchString}&limit=10&appid=${import.meta.env.VITE_API_KEY}`)
             .then(res => res.json())
             .then(json => {
                 if (json.length > 0) {
@@ -34,9 +40,20 @@ export const Search = () => {
 
     const keyPressHandler = async (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
+            navigate("/search?"+search);
             await getCities();
         }
     }
+
+    useEffect(() => {
+        if (location.search.slice(1)) {
+            setSearch(location.search.slice(1));
+            getCities(location.search.slice(1));
+        } else {
+            setSearch("");
+            setResults([]);
+        }
+    }, [location.search]);
 
     return (
         <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
@@ -49,7 +66,7 @@ export const Search = () => {
                         search={search}
                         setSearch={onSearchChange}
                     />
-                    <button onClick={getCities}>Search</button>
+                    <button onClick={()=>{getCities();navigate("/search?"+search);}}>Search</button>
                 </div>
 
                 {notFound

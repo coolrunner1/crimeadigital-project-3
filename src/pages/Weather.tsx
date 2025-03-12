@@ -35,6 +35,7 @@ export const Weather = () => {
     const dispatch = useDispatch();
 
     const [loaded, setLoaded] = useState(false);
+    const [queryStringEntered, setQueryStringEntered] = useState(false);
     const [index, setIndex] = useState(0);
 
     const location = useSelector((state: RootState) => state.location);
@@ -64,9 +65,14 @@ export const Weather = () => {
 
     const changeCity = async () => {
         setLoaded(false);
+        if (globalThis.location.search.slice(1)) {
+            setQueryStringEntered(true);
+            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?${globalThis.location.search.slice(1)}`);
+            return;
+        }
         if (index > 0 && index <= cities.length) {
             const i = index - 1;
-            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${cities[i].lat}&lon=${cities[i].lon}`)
+            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${cities[i].lat}&lon=${cities[i].lon}`);
         } else if (index === 0) {
             await getDefaultForecast();
         } else {
@@ -77,7 +83,7 @@ export const Weather = () => {
     const removeCity = () => {
         setLoaded(false);
         setIndex(index-1);
-        dispatch(removeFromCities(cities[index-1]))
+        dispatch(removeFromCities(cities[index-1]));
     };
 
     const getDaytime = () => {
@@ -124,12 +130,12 @@ export const Weather = () => {
                             }
 
                         </div>
-
-                        <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
-                            <button disabled={index === 0} onClick={() => setIndex(index-1)}>Back</button>
-                            <button disabled={index === 0} onClick={removeCity}>Remove</button>
-                            <button disabled={index === cities.length} onClick={() => setIndex(index+1)}>Forward</button>
-                        </div>
+                        {!queryStringEntered &&
+                            <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
+                                <button disabled={index === 0} onClick={() => setIndex(index-1)}>Back</button>
+                                <button disabled={index === 0} onClick={removeCity}>Remove</button>
+                                <button disabled={index === cities.length} onClick={() => setIndex(index+1)}>Forward</button>
+                            </div>}
                     </div>
                 </div>
             </>}
