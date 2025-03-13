@@ -6,6 +6,7 @@ import {Forecast} from "../types/Forecast.ts";
 import {WeatherBox} from "../components/WeatherBox.tsx";
 import {City} from "../types/City.ts";
 import {removeFromCities} from "../slices/savedSlice.ts";
+import {useNavigate} from "react-router";
 
 export const Weather = () => {
     const [forecast, setForecast] = useState<Forecast>({
@@ -41,6 +42,8 @@ export const Weather = () => {
     const location = useSelector((state: RootState) => state.location);
     const flags = useSelector((state: RootState) => state.flags);
     const cities: City[] = useSelector((state: RootState) => Array.from(state.saved.cities.values()));
+
+    const navigate = useNavigate();
 
     const networkRequest = async (url: string) => {
         fetch(`${url}&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
@@ -130,12 +133,14 @@ export const Weather = () => {
                             }
 
                         </div>
-                        {!queryStringEntered &&
+                        {!queryStringEntered ?
                             <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
                                 <button disabled={index === 0} onClick={() => setIndex(index-1)}>Back</button>
                                 <button disabled={index === 0} onClick={removeCity}>Remove</button>
                                 <button disabled={index === cities.length} onClick={() => setIndex(index+1)}>Forward</button>
-                            </div>}
+                            </div> :
+                            <button onClick={() => navigate(-1)}>Back</button>
+                        }
                     </div>
                 </div>
             </>}
