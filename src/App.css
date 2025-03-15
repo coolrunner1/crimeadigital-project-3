@@ -16,40 +16,22 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-    font-weight: 500;
-    color: #646cff;
-    text-decoration: inherit;
-}
-a:hover {
-    color: #535bf2;
-}
-
 body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
 }
 
+.background {
+    background-image: url("/dark-bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
-}
-
-button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: 0.6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color 0.25s;
-}
-
-button:hover {
-    border-color: #646cff;
 }
 
 button:disabled {
@@ -66,20 +48,13 @@ button:hover:disabled {
 
 @media (prefers-color-scheme: light) {
     :root {
-        color: #213547;
+        color: #202c36;
         background-color: #ffffff;
     }
     a:hover {
         color: #747bff;
     }
-    button {
-        background-color: #4681f4;
-        color: white;
-    }
-    button:hover {
-        @apply ring-2 ring-blue-300
-    }
-    button:hover:disabled {
-        @apply ring-0
+    .background{
+        background-image: url("/light-bg.jpg");
     }
 }

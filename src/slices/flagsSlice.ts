@@ -8,6 +8,7 @@ const flagsSlice = createSlice({
         showPressure: false,
         showHumidity: false,
         showDaytime: false,
+        showBackground: true,
     },
     reducers: {
         setShowFeelsLike: (state, action: PayloadAction<boolean>) => {
@@ -30,16 +31,24 @@ const flagsSlice = createSlice({
             state.showDaytime = action.payload;
             localStorage.setItem('showDaytime', action.payload.toString());
         },
+        setShowBackground: (state, action: PayloadAction<boolean>) => {
+            state.showBackground = action.payload;
+            localStorage.setItem('showBackground', action.payload.toString());
+        },
         setFlagsFromLocalStorage: (state) => {
             state.showFeelsLike = localStorage.getItem('feelsLike') === 'true';
             state.showWind = localStorage.getItem('showWind') === 'true';
             state.showPressure = localStorage.getItem('showPressure') === 'true';
             state.showHumidity = localStorage.getItem('showHumidity') === 'true';
             state.showDaytime = localStorage.getItem('showDaytime') === 'true';
+            const showBackground = localStorage.getItem('showBackground');
+            if (showBackground) {
+                state.showBackground = showBackground === 'true';
+            }
         }
     }
 });
 
-export const {setShowFeelsLike, setShowWind, setShowPressure, setShowHumidity, setFlagsFromLocalStorage, setShowDaytime}
+export const {setShowFeelsLike, setShowWind, setShowPressure, setShowHumidity, setFlagsFromLocalStorage, setShowDaytime, setShowBackground}
     = flagsSlice.actions;
 export default flagsSlice.reducer;
