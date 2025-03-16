@@ -57,7 +57,8 @@ button:hover:disabled {
     border-color: #ccc;
 }
 
-@media (max-height: 300px) {
+@media screen and (max-width: 995px),
+screen and (max-height: 700px) {
     body.background {
         background-size: 2000px;
     }
