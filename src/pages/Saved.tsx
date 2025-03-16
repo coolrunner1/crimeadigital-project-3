@@ -56,7 +56,7 @@ export const Saved = () => {
                 {allCities.length !== 0 && cities.length === 0
                     && <div className={"text-2xl"}>No cities found</div>}
                 <div className="overflow-hidden md:w-md lg:w-lg h-full">
-                    <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll md:w-md lg:w-lg pr-[17px] box-content">
+                    <div className="flex flex-col gap-5 max-h-[450px] overflow-y-scroll md:w-md lg:w-lg sm:pr-[17px] box-content">
                         {cities.map((item) => (<SearchItem item={item[1]} key={uuidv4()}/>))}
                     </div>
                 </div>
