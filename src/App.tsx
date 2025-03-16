@@ -4,7 +4,7 @@ import {Weather} from "./pages/Weather.tsx";
 import {PageNotFound} from "./pages/PageNotFound.tsx";
 import {NavBar} from "./components/NavBar.tsx";
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
 import {Loading} from "./components/Loading.tsx";
 import {Options} from "./pages/Options.tsx";
@@ -13,13 +13,10 @@ import {enableMapSet} from "immer";
 import {loadFromLocalStorage} from "./slices/savedSlice.ts";
 import {setFlagsFromLocalStorage} from "./slices/flagsSlice.ts";
 import {Saved} from "./pages/Saved.tsx";
-import {RootState} from "./state/store.ts";
-import { Background } from './components/Background.tsx';
 
 function App() {
     const dispatch = useDispatch();
     const [loaded, setLoaded] = useState(false);
-    const showBackground = useSelector((state: RootState) => state.flags.showBackground);
 
     useEffect(() => {
         enableMapSet();
@@ -42,7 +39,6 @@ function App() {
 
     return (
         <BrowserRouter>
-            {showBackground && <Background />}
             {!loaded
                 ? <Loading />
                 : <>

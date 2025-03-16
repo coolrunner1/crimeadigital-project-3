@@ -9,6 +9,7 @@ const flagsSlice = createSlice({
         showHumidity: false,
         showDaytime: false,
         showBackground: true,
+        darkMode: false,
     },
     reducers: {
         setShowFeelsLike: (state, action: PayloadAction<boolean>) => {
@@ -33,7 +34,13 @@ const flagsSlice = createSlice({
         },
         setShowBackground: (state, action: PayloadAction<boolean>) => {
             state.showBackground = action.payload;
+            document.body.classList.toggle('background');
             localStorage.setItem('showBackground', action.payload.toString());
+        },
+        setDarkMode: (state, action: PayloadAction<boolean>) => {
+            state.darkMode = action.payload;
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', action.payload.toString());
         },
         setFlagsFromLocalStorage: (state) => {
             state.showFeelsLike = localStorage.getItem('feelsLike') === 'true';
@@ -41,14 +48,28 @@ const flagsSlice = createSlice({
             state.showPressure = localStorage.getItem('showPressure') === 'true';
             state.showHumidity = localStorage.getItem('showHumidity') === 'true';
             state.showDaytime = localStorage.getItem('showDaytime') === 'true';
+
             const showBackground = localStorage.getItem('showBackground');
             if (showBackground) {
                 state.showBackground = showBackground === 'true';
+            }
+            if (state.showBackground) {
+                document.body.classList.add('background');
+            }
+
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode) {
+                state.darkMode = darkMode === 'true';
+            } else {
+                state.darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            }
+            if (state.darkMode) {
+                document.body.classList.add('dark');
             }
         }
     }
 });
 
-export const {setShowFeelsLike, setShowWind, setShowPressure, setShowHumidity, setFlagsFromLocalStorage, setShowDaytime, setShowBackground}
+export const {setShowFeelsLike, setShowWind, setShowPressure, setShowHumidity, setFlagsFromLocalStorage, setShowDaytime, setShowBackground, setDarkMode}
     = flagsSlice.actions;
 export default flagsSlice.reducer;

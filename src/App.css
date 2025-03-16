@@ -1,14 +1,14 @@
 @import "tailwindcss";
 @tailwind utilities;
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
 
     color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
-    background-color: #242424;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -17,16 +17,27 @@
 }
 
 body {
+    color: #202c36;
+    background-color: #ffffff;
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
 }
 
-.background {
-    background-image: url("/dark-bg.jpg");
+body.background {
+    background-image: url("/light-bg.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+body.dark {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+}
+
+body.dark.background {
+    background-image: url("/dark-bg.jpg");
 }
 
 h1 {
@@ -44,17 +55,4 @@ button:disabled:hover {
 
 button:hover:disabled {
     border-color: #ccc;
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #202c36;
-        background-color: #ffffff;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    .background{
-        background-image: url("/light-bg.jpg");
-    }
 }
