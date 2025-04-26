@@ -10,29 +10,7 @@ import {useNavigate} from "react-router";
 import {Button} from "../components/Button.tsx";
 
 export const Weather = () => {
-    const [forecast, setForecast] = useState<Forecast>({
-        name: "",
-        timezone: 0,
-        sys: {
-            country: "",
-            sunset: 0,
-            sunrise: 0,
-        },
-        main: {
-            temp: 0,
-            feels_like: 0,
-            pressure: 0,
-            humidity: 0,
-        },
-        wind: {
-            speed: 0,
-        },
-        weather: [{
-            icon: "",
-            main: "",
-            description: "",
-        }]
-    });
+    const [forecast, setForecast] = useState<Forecast|null>(null);
 
     const dispatch = useDispatch();
 
@@ -91,6 +69,7 @@ export const Weather = () => {
     };
 
     const getDaytime = () => {
+        if (!forecast) return null;
         const sunrise = new Date((forecast.sys.sunrise + forecast.timezone) * 1000);
         const sunset = new Date((forecast.sys.sunset+ forecast.timezone) * 1000);
         return `${sunrise.getUTCHours()}:${("0"+sunrise.getUTCMinutes()).slice(-2)} - 
@@ -104,7 +83,7 @@ export const Weather = () => {
     return (
         <>
             {!loaded && <Loading />}
-            {loaded && <>
+            {loaded && forecast && <>
                 <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                     <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto sm:backdrop-blur-xl z-99">
                         <div className="text-4xl font-bold">{forecast.name}, {forecast.sys.country}</div>
