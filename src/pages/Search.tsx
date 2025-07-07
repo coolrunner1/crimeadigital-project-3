@@ -1,64 +1,51 @@
 import {SearchBar} from "../components/SearchBar.tsx";
-import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {City} from "../types/City.ts";
 import {SearchItem} from "../components/SearchItem.tsx";
-import { v4 as uuidv4 } from 'uuid';
-import {useNavigate} from "react-router";
+import {v4 as uuidv4} from 'uuid';
+import {useSearchParams} from "react-router";
 import {Button} from "../components/Button.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {fetchCities} from "../api/cities.ts";
+import {Loading} from "../components/Loading.tsx";
+import {SearchContainer} from "../components/SearchContainer.tsx";
+import {SearchItemsContainer} from "../components/SearchItemsContainer.tsx";
 
 export const Search = () => {
-    const [search, setSearch] = useState<string>('');
-    const [results, setResults] = useState<City[]>([]);
-    const [notFound, setNotFound] = useState<boolean>(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchParam = searchParams.get("q") || "";
+    const [search, setSearch] = useState<string>(searchParam);
 
-    const navigate = useNavigate();
+    const {
+        data,
+        isLoading,
+        isError,
+        error
+    } = useQuery<City[]>({
+        queryKey: ['search', searchParam],
+        queryFn: fetchCities
+    });
 
     const onSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
-        setNotFound(false);
     }
 
-    const getCities = async (searchString ?: string) => {
-        if (!searchString) {
-            searchString = search;
-        }
-        fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchString}&limit=10&appid=${import.meta.env.VITE_API_KEY}`)
-            .then(res => res.json())
-            .then(json => {
-                if (json.length > 0) {
-                    setNotFound(false);
-                } else {
-                    setNotFound(true);
-                }
-
-                setResults(json);
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Network Error");
-            });
+    const handleSearchChange = () => {
+        setSearchParams((searchParams) => {
+            searchParams.set("q", search);
+            return searchParams;
+        });
     }
 
-    const keyPressHandler = async (event: KeyboardEvent<HTMLInputElement>) => {
+    const keyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            navigate("/search?"+search);
-            await getCities();
+            handleSearchChange();
         }
     }
-
-    useEffect(() => {
-        if (location.search.slice(1)) {
-            setSearch(location.search.slice(1));
-            getCities(location.search.slice(1));
-        } else {
-            setSearch("");
-            setResults([]);
-        }
-    }, [location.search]);
 
     return (
         <div className="mt-[25px] sm:mt-0 sm:h-svh flex">
-            <div className="flex flex-col gap-10 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto sm:backdrop-blur-xl z-99">
+            <SearchContainer>
                 <span className="font-bold text-4xl">Search</span>
                 <div className="flex flex-row w-full gap-3">
                     <SearchBar
@@ -69,19 +56,28 @@ export const Search = () => {
                     />
                     <Button
                         label={"Search"}
-                        onClick={()=>{getCities();navigate("/search?"+search);}}
+                        onClick={() => handleSearchChange()}
                     />
                 </div>
 
-                {notFound
-                    && <div className={"text-2xl"}>No cities found</div>}
+                {isLoading && <Loading/>}
 
-                <div className="flex flex-col gap-5 md:w-md lg:w-lg">
-                    {results.length > 0 &&
-                        results.map((item) =>
-                            (<SearchItem item={item} key={uuidv4()}/>))}
-                </div>
-            </div>
+                {!isLoading && !isError &&
+                    <>
+                        {data &&
+                            <>
+                                {!data.length && searchParam && <div className={"text-2xl"}>No cities found</div>}
+                                <SearchItemsContainer>
+                                    {data.length > 0 &&
+                                        data.map((item) => (<SearchItem item={item} key={uuidv4()}/>))}
+                                </SearchItemsContainer>
+                            </>
+                        }
+                    </>
+                }
+
+                {error && <div>{error.message}</div>}
+            </SearchContainer>
         </div>
     );
 };

@@ -1,21 +1,25 @@
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
-import {Loading} from "../components/Loading.tsx";
-import {Forecast} from "../types/Forecast.ts";
 import {WeatherInfoBox} from "../components/WeatherInfoBox.tsx";
 import {City} from "../types/City.ts";
 import {removeFromCities} from "../slices/savedSlice.ts";
-import {useNavigate} from "react-router";
+import {useNavigate, useSearchParams} from "react-router";
 import {Button} from "../components/Button.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {fetchWeather} from "../api/weather.ts";
+import {Loading} from "../components/Loading.tsx";
 
 export const Weather = () => {
-    const [forecast, setForecast] = useState<Forecast|null>(null);
-
     const dispatch = useDispatch();
+    const [searchParams] = useSearchParams();
 
-    const [loaded, setLoaded] = useState(false);
-    const [queryStringEntered, setQueryStringEntered] = useState(false);
+    const [search, setSearch] = useState<string | null>();
+    const [latitude, setLatitude] = useState<number | null>();
+    const [longitude, setLongitude] = useState<number | null>();
+    const [allowRequest, setAllowRequest] = useState<boolean>(false);
+
+    const queryStringEntered = searchParams.toString().length > 0;
     const [index, setIndex] = useState(0);
 
     const location = useSelector((state: RootState) => state.location);
@@ -24,46 +28,47 @@ export const Weather = () => {
 
     const navigate = useNavigate();
 
-    const networkRequest = async (url: string) => {
-        fetch(`${url}&units=metric&appid=${import.meta.env.VITE_API_KEY}`)
-            .then(res => res.json())
-            .then(json => {
-                setForecast(json);
-                setLoaded(true);
-            })
-            .catch(err => {
-                console.log(err);
-                alert("Network Error");
-            });
-    };
-
-    const getDefaultForecast = async () => {
-        if (location.latitude === 0 && location.longitude === 0) {
-            await networkRequest("https://api.openweathermap.org/data/2.5/weather?q=Sevastopol");
-        } else {
-            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}`)
-        }
-    };
+    const {
+        data: forecast,
+        isLoading,
+        isError,
+        error,
+    } = useQuery({
+        queryKey: ["weather", search, latitude, longitude],
+        queryFn: fetchWeather,
+        enabled: allowRequest
+    })
 
     const changeCity = async () => {
-        setLoaded(false);
-        if (globalThis.location.search.slice(1)) {
-            setQueryStringEntered(true);
-            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?${globalThis.location.search.slice(1)}`);
+        if (queryStringEntered) {
+            setLongitude(Number(searchParams.get("lon")));
+            setLatitude(Number(searchParams.get("lat")));
+            setSearch(searchParams.get("q"));
+            setAllowRequest(true);
             return;
         }
         if (index > 0 && index <= cities.length) {
             const i = index - 1;
-            await networkRequest(`https://api.openweathermap.org/data/2.5/weather?lat=${cities[i].lat}&lon=${cities[i].lon}`);
+            setLatitude(cities[i].lat);
+            setLongitude(cities[i].lon);
+            setSearch(null);
         } else if (index === 0) {
-            await getDefaultForecast();
+            if (location.latitude === 0 && location.longitude === 0) {
+                setLongitude(null);
+                setLatitude(null);
+                setSearch(null);
+            } else {
+                setLatitude(location.latitude);
+                setLongitude(location.longitude);
+                setSearch(null);
+            }
         } else {
             alert("Error! Please refresh the page");
         }
+        setAllowRequest(true);
     };
 
     const removeCity = () => {
-        setLoaded(false);
         setIndex(index-1);
         dispatch(removeFromCities(cities[index-1]));
     };
@@ -76,16 +81,25 @@ export const Weather = () => {
         ${sunset.getUTCHours()}:${("0"+sunset.getUTCMinutes()).slice(-2)}`;
     }
 
+    const handleBackClick = () => {
+        if (searchParams.get("fromSearch") === "true") {
+            navigate(-1)
+        } else {
+            navigate('/')
+        }
+    }
+
     useEffect(() => {
         changeCity();
-    }, [index]);
+    }, [index, queryStringEntered]);
 
     return (
         <>
-            {!loaded && <Loading />}
-            {loaded && forecast && <>
-                <div className="sm:h-svh flex mt-[25px] sm:mt-0">
-                    <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto sm:backdrop-blur-xl z-99">
+            <div className="sm:h-svh flex mt-[25px] sm:mt-0">
+                <div className="flex flex-col gap-3 items-center justify-center w-96 sm:w-2xl sm:p-12 sm:shadow sm:dark:shadow-lg sm:rounded-2xl m-auto sm:backdrop-blur-xl z-99">
+                    {isLoading && <div className="my-50"><Loading/></div>}
+                    {error && <div className="text-4xl font-bold">{error.message}</div>}
+                    {!isLoading && !isError && forecast && <>
                         <div className="text-4xl font-bold">{forecast.name}, {forecast.sys.country}</div>
                         <div className="text-2xl font-light">{forecast.main.temp}°C</div>
                         {flags.showFeelsLike &&
@@ -132,13 +146,13 @@ export const Weather = () => {
                                 />
                             </div> :
                             <Button
-                                onClick={() => navigate(-1)}
+                                onClick={() => handleBackClick()}
                                 label={"Back"}
                             />
                         }
-                    </div>
+                    </>}
                 </div>
-            </>}
+            </div>
         </>
     );
 };
