@@ -1,9 +1,9 @@
-import {City} from "../types/City.ts";
+import {City} from "../../types/City.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {appendToCities, removeFromCities} from "../slices/savedSlice.ts";
-import {RootState} from "../state/store.ts";
+import {appendToCities, removeFromCities} from "../../slices/savedSlice.ts";
+import {RootState} from "../../state/store.ts";
 import {useNavigate} from "react-router";
-import {Button} from "./Button.tsx";
+import {Button} from "../Global/Button.tsx";
 
 export const SearchItem = (props: {item: City}) => {
     const dispatch = useDispatch();

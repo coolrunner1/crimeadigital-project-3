@@ -1,4 +1,4 @@
-import {ToggleButton} from "../components/ToggleButton.tsx";
+import {ToggleButton} from "../components/Global/ToggleButton.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {

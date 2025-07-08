@@ -1,12 +1,12 @@
-import {SearchBar} from "../components/SearchBar.tsx";
-import {SearchItem} from "../components/SearchItem.tsx";
+import {SearchBar} from "../components/Search/SearchBar.tsx";
+import {SearchItem} from "../components/Search/SearchItem.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
 import { v4 as uuidv4 } from 'uuid';
-import {Button} from "../components/Button.tsx";
-import {SearchContainer} from "../components/SearchContainer.tsx";
-import {SearchItemsContainer} from "../components/SearchItemsContainer.tsx";
+import {Button} from "../components/Global/Button.tsx";
+import {SearchContainer} from "../components/Search/SearchContainer.tsx";
+import {SearchItemsContainer} from "../components/Search/SearchItemsContainer.tsx";
 
 export const Saved = () => {
     const allCities = useSelector((state: RootState)=> Array.from(state.saved.cities));

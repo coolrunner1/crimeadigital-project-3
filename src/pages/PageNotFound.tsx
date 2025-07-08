@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router";
-import {Button} from "../components/Button.tsx";
+import {Button} from "../components/Global/Button.tsx";
 
 export const PageNotFound = () => {
     const navigate = useNavigate();

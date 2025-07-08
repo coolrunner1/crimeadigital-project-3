@@ -1,15 +1,15 @@
-import {SearchBar} from "../components/SearchBar.tsx";
+import {SearchBar} from "../components/Search/SearchBar.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {City} from "../types/City.ts";
-import {SearchItem} from "../components/SearchItem.tsx";
+import {SearchItem} from "../components/Search/SearchItem.tsx";
 import {v4 as uuidv4} from 'uuid';
 import {useSearchParams} from "react-router";
-import {Button} from "../components/Button.tsx";
+import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {fetchCities} from "../api/cities.ts";
-import {Loading} from "../components/Loading.tsx";
-import {SearchContainer} from "../components/SearchContainer.tsx";
-import {SearchItemsContainer} from "../components/SearchItemsContainer.tsx";
+import {Loading} from "../components/Global/Loading.tsx";
+import {SearchContainer} from "../components/Search/SearchContainer.tsx";
+import {SearchItemsContainer} from "../components/Search/SearchItemsContainer.tsx";
 
 export const Search = () => {
     const [searchParams, setSearchParams] = useSearchParams();

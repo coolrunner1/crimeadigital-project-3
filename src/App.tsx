@@ -2,7 +2,7 @@ import './App.css'
 import {BrowserRouter, Navigate, Route, Routes} from "react-router";
 import {Weather} from "./pages/Weather.tsx";
 import {PageNotFound} from "./pages/PageNotFound.tsx";
-import {NavBar} from "./components/NavBar.tsx";
+import {NavBar} from "./components/NavBar/NavBar.tsx";
 import {useEffect, useState} from "react";
 import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "./slices/locationSlice.ts";
@@ -12,7 +12,7 @@ import {enableMapSet} from "immer";
 import {loadFromLocalStorage} from "./slices/savedSlice.ts";
 import {setFlagsFromLocalStorage} from "./slices/flagsSlice.ts";
 import {Saved} from "./pages/Saved.tsx";
-import {FullScreenLoading} from "./components/FullScreenLoading.tsx";
+import {FullScreenLoading} from "./components/Global/FullScreenLoading.tsx";
 
 function App() {
     const dispatch = useDispatch();

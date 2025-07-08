@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {City} from "../types/City.ts";
 import {removeFromCities} from "../slices/savedSlice.ts";
-import {useNavigate, useSearchParams} from "react-router";
 import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {fetchWeather} from "../api/weather.ts";
@@ -11,22 +10,17 @@ import {Loading} from "../components/Global/Loading.tsx";
 import {WeatherForecast} from "../components/Weather/WeatherForecast.tsx";
 import { WeatherContainer } from "../components/Weather/WeatherContainer.tsx";
 
-export const Weather = () => {
+export const Home = () => {
     const dispatch = useDispatch();
-    const [searchParams] = useSearchParams();
 
-    const search = useRef<string | null>(null)
     const latitude = useRef<number | null>(null);
     const longitude = useRef<number | null>(null);
     const [allowRequest, setAllowRequest] = useState(false);
 
-    const queryStringEntered = searchParams.toString().length > 0;
     const [index, setIndex] = useState(0);
 
     const location = useSelector((state: RootState) => state.location);
     const cities: City[] = useSelector((state: RootState) => Array.from(state.saved.cities.values()));
-
-    const navigate = useNavigate();
 
     const {
         data: forecast,
@@ -34,7 +28,7 @@ export const Weather = () => {
         isError,
         error,
     } = useQuery({
-        queryKey: ["weather", search.current, latitude.current, longitude.current],
+        queryKey: ["weather", null, latitude.current, longitude.current],
         queryFn: fetchWeather,
         enabled: allowRequest,
         refetchInterval: 300000,
@@ -42,27 +36,17 @@ export const Weather = () => {
 
     const changeCity = async () => {
         setAllowRequest(false);
-        if (queryStringEntered) {
-            longitude.current = Number(searchParams.get("lon"));
-            latitude.current = Number(searchParams.get("lat"));
-            search.current = searchParams.get("q");
-            setAllowRequest(true);
-            return;
-        }
         if (index > 0 && index <= cities.length) {
             const i = index - 1;
             latitude.current = cities[i].lat;
             longitude.current = cities[i].lon;
-            search.current = null;
         } else if (index === 0) {
             if (location.latitude === 0 && location.longitude === 0) {
                 longitude.current = null;
                 latitude.current = null;
-                search.current = null;
             } else {
                 latitude.current = location.latitude;
                 longitude.current = location.longitude;
-                search.current = null;
             }
         } else {
             alert("Error! Please refresh the page");
@@ -75,17 +59,9 @@ export const Weather = () => {
         dispatch(removeFromCities(cities[index-1]));
     };
 
-    const handleBackClick = () => {
-        if (searchParams.get("fromSearch") === "true") {
-            navigate(-1)
-        } else {
-            navigate('/')
-        }
-    }
-
     useEffect(() => {
         changeCity();
-    }, [index, queryStringEntered]);
+    }, [index]);
 
     return (
         <>
@@ -95,29 +71,23 @@ export const Weather = () => {
                     {error && <div className="text-4xl font-bold">{error.message}</div>}
                     {!isLoading && !isError && forecast && <>
                         <WeatherForecast forecast={forecast} />
-                        {!queryStringEntered ?
-                            <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
-                                <Button
-                                    disabled={index === 0}
-                                    onClick={() => setIndex(index-1)}
-                                    label={"Back"}
-                                />
-                                <Button
-                                    disabled={index === 0}
-                                    onClick={removeCity}
-                                    label={"Remove"}
-                                />
-                                <Button
-                                    disabled={index === cities.length}
-                                    onClick={() => setIndex(index+1)}
-                                    label={"Forward"}
-                                />
-                            </div> :
+                        <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
                             <Button
-                                onClick={() => handleBackClick()}
+                                disabled={index === 0}
+                                onClick={() => setIndex(index-1)}
                                 label={"Back"}
                             />
-                        }
+                            <Button
+                                disabled={index === 0}
+                                onClick={removeCity}
+                                label={"Remove"}
+                            />
+                            <Button
+                                disabled={index === cities.length}
+                                onClick={() => setIndex(index+1)}
+                                label={"Forward"}
+                            />
+                        </div>
                     </>}
                 </WeatherContainer>
             </div>
