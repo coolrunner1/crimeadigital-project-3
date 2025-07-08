@@ -12,7 +12,7 @@ export const SearchItem = (props: {item: City}) => {
 
     return (
         <div className="flex justify-between align-center gap-3 w-full p-4 px-5 rounded-lg shadow-lg bg-[#ffffff0f] backdrop-blur-xl"
-             onClick={() => navigate(`/?lat=${props.item.lat}&lon=${props.item.lon}&fromSearch=true`)}>
+             onClick={() => navigate(`/weather?lat=${props.item.lat}&lon=${props.item.lon}&fromSearch=true`)}>
             <span className="my-auto">{props.item.name}, {props.item.state && props.item.state+", "} {props.item.country}</span>
             {cities.get(`${props.item.lat}${props.item.lon}`) ?
                 <Button
