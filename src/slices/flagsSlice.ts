@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {deserializeFlags} from "../utils/deserializeFlags.ts";
 
 const flagsSlice = createSlice({
     name: 'flags',
@@ -14,54 +15,70 @@ const flagsSlice = createSlice({
     reducers: {
         setShowFeelsLike: (state, action: PayloadAction<boolean>) => {
             state.showFeelsLike = action.payload;
-            localStorage.setItem('feelsLike', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showFeelsLike = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setShowWind: (state, action: PayloadAction<boolean>) => {
             state.showWind = action.payload;
-            localStorage.setItem('showWind', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showWind = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setShowPressure: (state, action: PayloadAction<boolean>) => {
             state.showPressure = action.payload;
-            localStorage.setItem('showPressure', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showPressure = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setShowHumidity: (state, action: PayloadAction<boolean>) => {
             state.showHumidity = action.payload;
-            localStorage.setItem('showHumidity', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showHumidity = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setShowDaytime: (state, action: PayloadAction<boolean>) => {
             state.showDaytime = action.payload;
-            localStorage.setItem('showDaytime', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showDaytime = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setShowBackground: (state, action: PayloadAction<boolean>) => {
             state.showBackground = action.payload;
             document.body.classList.toggle('background');
-            localStorage.setItem('showBackground', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.showBackground = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setDarkMode: (state, action: PayloadAction<boolean>) => {
             state.darkMode = action.payload;
             document.body.classList.toggle('dark');
-            localStorage.setItem('darkMode', action.payload.toString());
+            const flags = deserializeFlags();
+            flags.darkMode = action.payload;
+            localStorage.setItem('flags', JSON.stringify(flags));
         },
         setFlagsFromLocalStorage: (state) => {
-            state.showFeelsLike = localStorage.getItem('feelsLike') === 'true';
-            state.showWind = localStorage.getItem('showWind') === 'true';
-            state.showPressure = localStorage.getItem('showPressure') === 'true';
-            state.showHumidity = localStorage.getItem('showHumidity') === 'true';
-            state.showDaytime = localStorage.getItem('showDaytime') === 'true';
+            const flags = deserializeFlags();
 
-            const showBackground = localStorage.getItem('showBackground');
-            if (showBackground) {
-                state.showBackground = showBackground === 'true';
-            }
+            state.showFeelsLike = flags.showFeelsLike;
+            state.showWind = flags.showFeelsLike;
+            state.showPressure = flags.showPressure;
+            state.showHumidity = flags.showHumidity;
+            state.showDaytime = flags.showDaytime;
+            state.showBackground = flags.showBackground;
+
             if (state.showBackground) {
                 document.body.classList.add('background');
             }
 
-            const darkMode = localStorage.getItem('darkMode');
-            if (darkMode) {
-                state.darkMode = darkMode === 'true';
+            if (flags.darkMode) {
+                state.darkMode = flags.darkMode;
             } else {
                 state.darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                if (flags.darkMode !== state.darkMode) {
+                    flags.darkMode = state.darkMode;
+                    localStorage.setItem("flags", JSON.stringify(flags));
+                }
             }
             if (state.darkMode) {
                 document.body.classList.add('dark');
