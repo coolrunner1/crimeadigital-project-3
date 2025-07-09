@@ -87,6 +87,15 @@ const flagsSlice = createSlice({
     }
 });
 
-export const {setShowFeelsLike, setShowWind, setShowPressure, setShowHumidity, setFlagsFromLocalStorage, setShowDaytime, setShowBackground, setDarkMode}
+export const {
+    setShowFeelsLike,
+    setShowWind,
+    setShowPressure,
+    setShowHumidity,
+    setFlagsFromLocalStorage,
+    setShowDaytime,
+    setShowBackground,
+    setDarkMode
+}
     = flagsSlice.actions;
 export default flagsSlice.reducer;

@@ -34,7 +34,7 @@ export const getDefaultWeather = async (): Promise<Forecast> => {
     return res.json();
 }
 
-export const getWeatherByCoordinates = async (lat: string, lon: string): Promise<Forecast> => {
+export const getWeatherByCoordinates = async (lat: string | number, lon: string | number): Promise<Forecast> => {
     const res = await fetch(`${baseUrl}?lat=${lat}&lon=${lon}${authKey}`);
     if (!res.ok) {
         handleWeatherError(res);
@@ -43,14 +43,14 @@ export const getWeatherByCoordinates = async (lat: string, lon: string): Promise
 }
 
 const handleWeatherError = (res: Response) => {
-    if (res.status === 400) {
-        throw new Error("Bad request. Provided coordinates are invalid. Try disabling geolocation");
+    switch (res.status) {
+        case 400:
+            throw new Error("Bad request. Provided coordinates are invalid. Try disabling geolocation");
+        case 401:
+            throw new Error("Invalid api key");
+        case 403:
+            throw new Error("Location could not be found");
+        default:
+            throw new Error(`Failed to fetch weather`);
     }
-    if (res.status === 401) {
-        throw new Error("Invalid api key");
-    }
-    if (res.status === 404) {
-        throw new Error("Location could not be found");
-    }
-    throw new Error(`Failed to fetch weather`);
 }

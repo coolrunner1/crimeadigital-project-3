@@ -7,5 +7,11 @@ export const fetchCities = async ({queryKey}: any): Promise<City[]> => {
     if (!res.ok) {
         throw new Error(`Failed to fetch cities`);
     }
-    return res.json();
+
+    const data: City[] = await res.json();
+
+    return data.map((city) => ({
+        ...city,
+        id: `${city.lat}${city.lon}`,
+    }));
 }

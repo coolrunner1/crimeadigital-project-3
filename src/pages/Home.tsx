@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {City} from "../types/City.ts";
-import {removeFromCities} from "../slices/savedSlice.ts";
+import {removeFromCities} from "../slices/savedCitiesSlice.ts";
 import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {fetchWeather} from "../api/weather.ts";
@@ -20,7 +20,7 @@ export const Home = () => {
     const [index, setIndex] = useState(0);
 
     const location = useSelector((state: RootState) => state.location);
-    const cities: City[] = useSelector((state: RootState) => Array.from(state.saved.cities.values()));
+    const cities: City[] = useSelector((state: RootState) => Object.values(state.saved.cities));
 
     const {
         data: forecast,

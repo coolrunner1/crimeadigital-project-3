@@ -3,13 +3,12 @@ import {SearchItem} from "../components/Search/SearchItem.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
 import {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
-import { v4 as uuidv4 } from 'uuid';
 import {Button} from "../components/Global/Button.tsx";
 import {SearchContainer} from "../components/Search/SearchContainer.tsx";
 import {SearchItemsContainer} from "../components/Search/SearchItemsContainer.tsx";
 
 export const Saved = () => {
-    const allCities = useSelector((state: RootState)=> Array.from(state.saved.cities));
+    const allCities = useSelector((state: RootState)=> Object.entries(state.saved.cities));
 
     const [search, setSearch] = useState('');
     const [cities, setCities] = useState(allCities);
@@ -58,7 +57,7 @@ export const Saved = () => {
                 {allCities.length !== 0 && cities.length === 0
                     && <div className={"text-2xl"}>No cities found</div>}
                 <SearchItemsContainer>
-                    {cities.map((item) => (<SearchItem item={item[1]} key={uuidv4()}/>))}
+                    {cities.map((item) => (<SearchItem item={item[1]} key={item[0]}/>))}
                 </SearchItemsContainer>
             </SearchContainer>
         </div>

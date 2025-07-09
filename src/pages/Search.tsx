@@ -2,7 +2,6 @@ import {SearchBar} from "../components/Search/SearchBar.tsx";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
 import {City} from "../types/City.ts";
 import {SearchItem} from "../components/Search/SearchItem.tsx";
-import {v4 as uuidv4} from 'uuid';
 import {useSearchParams} from "react-router";
 import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
@@ -69,7 +68,7 @@ export const Search = () => {
                                 {!data.length && searchParam && <div className={"text-2xl"}>No cities found</div>}
                                 <SearchItemsContainer>
                                     {data.length > 0 &&
-                                        data.map((item) => (<SearchItem item={item} key={uuidv4()}/>))}
+                                        data.map((item) => (<SearchItem item={item} key={item.id}/>))}
                                 </SearchItemsContainer>
                             </>
                         }

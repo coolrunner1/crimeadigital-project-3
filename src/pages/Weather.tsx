@@ -73,6 +73,10 @@ export const Weather = () => {
     }, [navigate, fromSearch]);
 
     useEffect(() => {
+        if (fromSearch.current) searchParams.set("fromSearch", "false")
+    }, [fromSearch]);
+
+    useEffect(() => {
         changeCity();
     }, [queryStringEntered]);
 
