@@ -1,11 +1,15 @@
 import {ChangeEventHandler, KeyboardEventHandler} from "react";
 
+export type SearchBarProps = {
+    placeholder: string;
+    keyPressHandler: KeyboardEventHandler<HTMLInputElement>;
+    search: string;
+    setSearch: ChangeEventHandler<HTMLInputElement>;
+};
+
 export const SearchBar = (
-    props: {placeholder: string;
-        keyPressHandler: KeyboardEventHandler<HTMLInputElement>;
-        search: string;
-        setSearch: ChangeEventHandler<HTMLInputElement>;
-    }) => {
+    props: SearchBarProps
+) => {
 
 
     return (

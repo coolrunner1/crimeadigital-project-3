@@ -1,11 +1,14 @@
 import {ChangeEventHandler} from "react";
 
+export type ToggleButtonProps = {
+    label: string;
+    onChange: ChangeEventHandler<HTMLInputElement>;
+    checked: boolean
+};
+
 export const ToggleButton = (
-    props: {
-        label: string;
-        onChange: ChangeEventHandler<HTMLInputElement>;
-        checked: boolean
-    }) => {
+    props: ToggleButtonProps
+) => {
 
     return (
         <label className="inline-flex items-center cursor-pointer">

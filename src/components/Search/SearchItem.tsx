@@ -5,7 +5,9 @@ import {RootState} from "../../state/store.ts";
 import {useNavigate} from "react-router";
 import {Button} from "../Global/Button.tsx";
 
-export const SearchItem = (props: {item: City}) => {
+export type SearchItemProps = {item: City};
+
+export const SearchItem = (props: SearchItemProps) => {
     const dispatch = useDispatch();
     const cities = useSelector((state: RootState)=> state.saved.cities);
     const navigate = useNavigate();
