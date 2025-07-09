@@ -9,9 +9,18 @@ import {fetchWeather} from "../api/weather.ts";
 import {Loading} from "../components/Global/Loading.tsx";
 import {WeatherForecast} from "../components/Weather/WeatherForecast.tsx";
 import { WeatherContainer } from "../components/Weather/WeatherContainer.tsx";
+import {useNavigate, useSearchParams} from "react-router";
 
 export const Home = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        console.log(searchParams.toString());
+        if (searchParams.size) navigate("/weather?"+searchParams.toString());
+    }, [searchParams]);
 
     const latitude = useRef<number | null>(null);
     const longitude = useRef<number | null>(null);
