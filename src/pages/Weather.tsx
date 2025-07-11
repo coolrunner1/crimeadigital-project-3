@@ -3,11 +3,11 @@ import {useNavigate, useSearchParams} from "react-router";
 import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {fetchWeather} from "../api/weather.ts";
-import {Loading} from "../components/Global/Loading.tsx";
 import {WeatherForecast} from "../components/Weather/WeatherForecast.tsx";
 import { WeatherContainer } from "../components/Weather/WeatherContainer.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/store.ts";
+import {WeatherForecastLoadingPlaceholder} from "../components/Weather/WeatherForecastLoadingPlaceholder.tsx";
 
 export const Weather = () => {
     const [searchParams] = useSearchParams();
@@ -84,8 +84,8 @@ export const Weather = () => {
         <>
             <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                 <WeatherContainer>
-                    {isLoading && <div className="my-50"><Loading/></div>}
                     {error && <div className="text-2xl font-bold">{error.message}</div>}
+                    {isLoading && <WeatherForecastLoadingPlaceholder/>}
                     {!isLoading && !isError && forecast && <>
                         <WeatherForecast forecast={forecast} />
                         {getBackButton()}

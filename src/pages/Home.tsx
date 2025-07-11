@@ -6,10 +6,10 @@ import {removeFromCities} from "../slices/savedCitiesSlice.ts";
 import {Button} from "../components/Global/Button.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {fetchWeather} from "../api/weather.ts";
-import {Loading} from "../components/Global/Loading.tsx";
 import {WeatherForecast} from "../components/Weather/WeatherForecast.tsx";
 import { WeatherContainer } from "../components/Weather/WeatherContainer.tsx";
 import {useNavigate, useSearchParams} from "react-router";
+import {WeatherForecastLoadingPlaceholder} from "../components/Weather/WeatherForecastLoadingPlaceholder.tsx";
 
 export const Home = () => {
     const dispatch = useDispatch();
@@ -76,28 +76,28 @@ export const Home = () => {
         <>
             <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                 <WeatherContainer>
-                    {isLoading && <div className="my-50"><Loading/></div>}
                     {error && <div className="text-2xl font-bold">{error.message}</div>}
+                    {isLoading && <WeatherForecastLoadingPlaceholder/>}
                     {!isLoading && !isError && forecast && <>
                         <WeatherForecast forecast={forecast} />
-                        <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
-                            <Button
-                                disabled={index === 0}
-                                onClick={() => setIndex(index-1)}
-                                label={"Back"}
-                            />
-                            <Button
-                                disabled={index === 0}
-                                onClick={removeCity}
-                                label={"Remove"}
-                            />
-                            <Button
-                                disabled={index === cities.length}
-                                onClick={() => setIndex(index+1)}
-                                label={"Forward"}
-                            />
-                        </div>
                     </>}
+                    <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
+                        <Button
+                            disabled={index === 0}
+                            onClick={() => setIndex(index-1)}
+                            label={"Back"}
+                        />
+                        <Button
+                            disabled={index === 0}
+                            onClick={removeCity}
+                            label={"Remove"}
+                        />
+                        <Button
+                            disabled={index === cities.length}
+                            onClick={() => setIndex(index+1)}
+                            label={"Forward"}
+                        />
+                    </div>
                 </WeatherContainer>
             </div>
         </>

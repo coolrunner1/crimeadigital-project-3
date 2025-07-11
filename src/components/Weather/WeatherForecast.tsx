@@ -28,7 +28,8 @@ export const WeatherForecast = ({forecast}: WeatherForecastProps) => {
             <div className="text-2xl font-light flex flex-col text-center justify-center">
                 <img src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`} alt="weather-icon"/>
                 <span className="text-2xl">{forecast.weather[0].main}</span>
-                <span className="text-xl">{forecast.weather[0].description}</span></div>
+                <span className="text-xl">{forecast.weather[0].description}</span>
+            </div>
             <div className={
                 (flags.showWind && flags.showHumidity && flags.showPressure && flags.showDaytime)
                     ? "grid grid-rows-4 grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 gap-2 sm:gap-4 mt-5"

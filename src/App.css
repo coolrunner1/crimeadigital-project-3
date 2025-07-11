@@ -16,6 +16,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+@theme {
+    --color-transparent-100: #ffffff0f;
+    --color-transparent-200: #ffffff1f;
+}
+
 body {
     color: #202c36;
     background-color: #ffffff;
