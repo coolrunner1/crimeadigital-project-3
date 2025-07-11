@@ -11,7 +11,7 @@ export const Button = (
 ) => {
     return (
         <button
-            className="px-5 py-3 rounded-xl shadow-2xl bg-transparent-100 hover:bg-transparent-200 backdrop-blur-xl transition-all duration-300 ease-in-out"
+            className="px-5 py-3 rounded-xl shadow-2xl bg-transparent-100 hover:bg-transparent-200 disabled:bg-gray-300 backdrop-blur-xl transition-all duration-300 ease-in-out"
             onClick={props.onClick}
             disabled={props.disabled}
         >{props.label}</button>
