@@ -76,11 +76,19 @@ export const Home = () => {
         <>
             <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                 <WeatherContainer>
-                    {error && <div className="text-2xl font-bold">{error.message}</div>}
-                    {isLoading && <WeatherForecastLoadingPlaceholder/>}
-                    {!isLoading && !isError && forecast && <>
+                    {error &&
+                        <div
+                            className="text-2xl font-bold"
+                        >
+                            {error.message}
+                        </div>
+                    }
+                    {isLoading &&
+                        <WeatherForecastLoadingPlaceholder/>
+                    }
+                    {!isLoading && !isError && forecast &&
                         <WeatherForecast forecast={forecast} />
-                    </>}
+                    }
                     <div className={"grid grid-cols-3 grid-rows-1 gap-3 mb-3 sm:mb-0 md:mt-5"}>
                         <Button
                             disabled={index === 0}

@@ -13,8 +13,10 @@ export const SearchItem = (props: SearchItemProps) => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex justify-between align-center gap-3 w-full p-4 px-5 rounded-lg shadow-lg bg-transparent-100 backdrop-blur-xl"
-             onClick={() => navigate(`/weather?lat=${props.item.lat}&lon=${props.item.lon}&fromSearch=true`)}>
+        <div
+            className="flex justify-between align-center gap-3 w-full p-4 px-5 rounded-lg shadow-lg bg-transparent-100 backdrop-blur-xl"
+            onClick={() => navigate(`/weather?lat=${props.item.lat}&lon=${props.item.lon}&fromSearch=true`)}
+        >
             <span className="my-auto">{props.item.name}, {props.item.state && props.item.state+", "} {props.item.country}</span>
             {cities[props.item.id] ?
                 <Button

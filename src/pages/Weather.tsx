@@ -84,12 +84,20 @@ export const Weather = () => {
         <>
             <div className="sm:h-svh flex mt-[25px] sm:mt-0">
                 <WeatherContainer>
-                    {error && <div className="text-2xl font-bold">{error.message}</div>}
-                    {isLoading && <WeatherForecastLoadingPlaceholder/>}
-                    {!isLoading && !isError && forecast && <>
+                    {error &&
+                        <div
+                            className="text-2xl font-bold"
+                        >
+                            {error.message}
+                        </div>
+                    }
+                    {isLoading &&
+                        <WeatherForecastLoadingPlaceholder/>
+                    }
+                    {!isLoading && !isError && forecast &&
                         <WeatherForecast forecast={forecast} />
-                        {getBackButton()}
-                    </>}
+                    }
+                    {getBackButton()}
                 </WeatherContainer>
             </div>
         </>
