@@ -18,7 +18,6 @@ export const Home = () => {
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        console.log(searchParams.toString());
         if (searchParams.size) navigate("/weather?"+searchParams.toString());
     }, [searchParams]);
 

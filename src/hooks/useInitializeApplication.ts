@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {useDispatch} from 'react-redux';
 import {setLatitude, setLongitude} from "../slices/locationSlice.ts";
-import {enableMapSet} from "immer";
 import {setSavedCitiesFromLocalStorage} from "../slices/savedCitiesSlice.ts";
 import {setFlagsFromLocalStorage} from "../slices/flagsSlice.ts";
 import {getWeatherByCoordinates} from "../api/weather.ts";
@@ -11,7 +10,6 @@ export const useInitializeApplication = () => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        enableMapSet();
         dispatch(setSavedCitiesFromLocalStorage());
         dispatch(setFlagsFromLocalStorage());
         if (navigator.geolocation) {
